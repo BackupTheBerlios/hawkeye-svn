@@ -1,0 +1,7 @@
+<mime>
+	<comment>Extensible Markup Language</comment>	<application name="gedit" default="True">
+		<path>/usr/bin/gedit</path>
+		<appcomment>Gnome Text Editor</appcomment>
+	</application>
+	<icon>/usr/share/icons/crystal/48x48/mimetypes/document.png</icon>
+</mime>

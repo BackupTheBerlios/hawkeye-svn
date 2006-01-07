@@ -1,0 +1,7 @@
+<mime>
+	<comment>python source</comment>	<application name="gedit" default="True">
+		<path>/usr/bin/gedit</path>
+		<appcomment>Gnome Text Editor</appcomment>
+	</application>
+	<icon>/usr/share/icons/crystal/48x48/mimetypes/source_py.png</icon>
+</mime>
