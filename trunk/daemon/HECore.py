@@ -26,7 +26,7 @@ class HECore(dbus.service.Object):
 	# --- the request needs to start for every request a new thread....so we should do this ;-)
 	@dbus.service.method('de.nebulon.HawkeyeIFace')  
 	def request(self, instruction, params):
-		if len(params) > 1:
+		if len(params) >= 1:
 			plugin_type = HEUri.getPluginType(params[0])
 			# check if the plugin is loaded
 			if not self.__plugins.has_key(plugin_type):
@@ -49,10 +49,12 @@ class HECore(dbus.service.Object):
 	# ---		1)	more directories with plugins
 	# ---		2) no real loading is done, because of "from plugins import *" every plugin is loaded at startup
 	def loadPlugin(self, plugin_key):
+		found = False
 		for plugin in Plugins.__all__:
-			if plugin.find("HE"+capitalize(plugin_key)) != -1:         
+			if plugin.find("HE"+capitalize(plugin_key)) != -1:
+				found = True       
 				exec("new_plugin = "+plugin+"."+plugin+"()")
 				self.__plugins.update({plugin_key: new_plugin})
-			else:
-				raise HEException.HEException("[HECore]\tthe needed plugin '"+plugin_key+"' couldn't be loaded")
+		if not found:
+			raise HEException.HEException("[HECore]\tthe needed plugin '"+plugin_key+"' couldn't be loaded")
     
