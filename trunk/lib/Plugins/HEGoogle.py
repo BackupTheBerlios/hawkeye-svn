@@ -47,12 +47,10 @@ class HEGoogle( HEPlugin.HEPlugin ):
 					self.__server = WSDL.Proxy(self.__wsdl_path)
 				else:
 					raise HEException.HEException("WSDL file is not set")
-				print 1
 				if self.__key != None:
 					length = 10
 					if len(params) == 2:
 						length = HEUri.getPath(params[1])
-					print self.__key, HEUri.getPath(params[0]) , 0, length, False, "", False, "", "utf-8", "utf-8"
 					results = self.__server.doGoogleSearch(self.__key, HEUri.getPath(params[0]) , 0, length, False, "", False, "", "utf-8", "utf-8")
 					result = []
 					for data in results.resultElements:
@@ -61,7 +59,7 @@ class HEGoogle( HEPlugin.HEPlugin ):
 						cur.append(data.title)
 						cur.append(data.summary)
 						result.append(cur)
-					return "test"
+					return result
 				else:
 					raise HEException.HEException("Key is not set")
 			else:
