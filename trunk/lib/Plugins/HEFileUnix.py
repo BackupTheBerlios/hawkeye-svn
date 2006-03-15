@@ -5,6 +5,7 @@ import thread
 		
 from HawkEye import HEUri
 from HawkEye import HEPlugin
+from HawkEye import HEException
 
 class HEFileUnix( HEPlugin.HEPlugin ):
 

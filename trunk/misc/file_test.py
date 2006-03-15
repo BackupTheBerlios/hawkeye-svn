@@ -4,8 +4,6 @@ from HawkEye import *
 import gobject
 import urllib
 
-#gobject.threads_init()
-
 def return_handler(result_list):
 	print "Return: ",result_list
 	
@@ -13,12 +11,10 @@ def error_handler(error):
 	print "Error: ",error
 	
 	
-src = "http://kernel.org/pub/linux/kernel/v2.6/patch-2.6.15.6.bz2"
-target = "/tmp/patch-2.6.15.6.bz2"
-#src = "http://kernel.org/pub/linux/kernel/v2.6/linux-2.6.15.6.tar.bz2"
+dir = "file:///home/"
 
 client = HEClient.getHEClient()
-client.request("GET", [src,target], return_handler, error_handler)
+client.request("GET", [dir], return_handler, error_handler)
 
 mainloop = gobject.MainLoop()
 mainloop.run()

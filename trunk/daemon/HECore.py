@@ -5,13 +5,31 @@ from HawkEye import Plugins
 from HawkEye.Plugins import *
 
 from string import *
+from threading import Thread
 
 import gobject
 import dbus
 import dbus.service
 if getattr(dbus, 'version', (0,0,0)) >= (0,41,0):
     import dbus.glib
-        
+
+
+
+class NewThread(Thread):
+	def __init__(self, method, return_cb, params):
+		Thread.__init__(self)
+		self.params = params
+		self.return_cb = return_cb
+		self.method = method
+		
+	def run(self):
+		try:
+			self.method(self.return_cb, self.params)
+		except IOError, e:
+			print e
+		
+		
+		
 class HECore(dbus.service.Object):
         
 	def __init__(self):
@@ -24,8 +42,8 @@ class HECore(dbus.service.Object):
 
 
 	# --- the request needs to start for every request a new thread....so we should do this ;-)
-	@dbus.service.method('de.nebulon.HawkeyeIFace')  
-	def request(self, instruction, params):
+	@dbus.service.method('de.nebulon.HawkeyeIFace', async_callbacks=('return_cb', 'error_cb'))
+	def request(self, instruction, params, return_cb, error_cb):
 		if len(params) >= 1:
 			plugin_type = HEUri.getPluginType(params[0])
 			# check if the plugin is loaded
@@ -39,12 +57,14 @@ class HECore(dbus.service.Object):
 			method = self.__plugins[plugin_type].getInstruction(instruction)
 			if method:
 				try:
-					return method(params)
+					thread = NewThread(method, return_cb, params)
+					thread.start()
+					return "OK"
 				except HEException.HEException, e:
-					return "Error";
+					return "Error"
 			else:
 				raise HEException.HEException("[HECore]\tinstruction '"+instruction+"' not available in '"+plugin_type+"' Backend")
-
+				
 	# --- this system needs a complete rewrite:
 	# ---		1)	more directories with plugins
 	# ---		2) no real loading is done, because of "from plugins import *" every plugin is loaded at startup

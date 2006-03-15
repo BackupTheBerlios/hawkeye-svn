@@ -1,5 +1,7 @@
 from HawkEye import HEException
 
+import thread
+
 import dbus
 import dbus.service
 if getattr(dbus, 'version', (0,0,0)) >= (0,41,0):
@@ -29,4 +31,5 @@ class __HEClient:
 		if params != None:
 			for param in params:
 				dbus_params.append(str(param))
-			return self.interface.request(instruction, dbus_params, reply_handler=return_handler, error_handler=error_handler, timeout = timeout)
+			self.interface.request(instruction, dbus_params, reply_handler=return_handler, error_handler=error_handler, timeout = timeout)
+			

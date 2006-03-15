@@ -14,7 +14,7 @@ def error_handler(error):
 client = HEClient.getHEClient()
 
 client.request("SETKEY", ["google://FViw8hpQFHKaXU0epHdlLPgrXeud3/Wi"], return_handler, error_handler)
-client.request("SETWSDL", ["google://home/shrek/code/hawkeye/trunk/misc/GoogleSearch.wsdl"], return_handler, error_handler)
+client.request("SETWSDL", ["google://home/the_hippie/Projekte/hawkeye/trunk/misc/GoogleSearch.wsdl"], return_handler, error_handler)
 client.request("SEARCH", ["google://hawkeye"], return_handler, error_handler)
 
 mainloop = gobject.MainLoop()
