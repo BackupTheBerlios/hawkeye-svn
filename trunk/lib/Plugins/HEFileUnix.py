@@ -33,7 +33,7 @@ class HEFileUnix( HEPlugin.HEPlugin ):
 			uri += "/"
 		return uri
 		
-	def go_up(self, return_callback, params):
+	def go_up(self, params, return_callback=None):
 		params[0] = self.checkUri(params[0])
 		pos = HEUri.getPath(params[0]).rfind("/")
 		if pos == 0:
@@ -43,14 +43,14 @@ class HEFileUnix( HEPlugin.HEPlugin ):
 			return_callback(params[0])
 	
 	# ---- checks if the HEUri exists
-	def file_exists(self, return_callback, params):
+	def file_exists(self, params, return_callback=None):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
 			return_callback(True)
 		else:
 			return_callback(False)
 
-	def get(self, return_callback, params):
+	def get(self, params, return_callback=None):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
 			item_list = os.listdir(HEUri.getPath(params[0]))
@@ -68,7 +68,7 @@ class HEFileUnix( HEPlugin.HEPlugin ):
 		
 		
 	# ---- removes the Container in the HEUri passed with params[0] 
-	def remove(self, return_callback, params):
+	def remove(self, params, return_callback=None):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
 			os.remove(HEUri.getPath(params[0]))
@@ -76,13 +76,13 @@ class HEFileUnix( HEPlugin.HEPlugin ):
 			raise HEException.HEException("path "+params[0]+" does not exist")
 
 	# ---- copy method ---- the first callback it will use for progress
-	def copy(self, return_callback, params):
+	def copy(self, params, return_callback=None):
 		return_callback(1)
 		
-	def move(self, return_callback, params):
+	def move(self, params, return_callback=None):
 		return_callback(1)
 		
-	def exists(self, return_callback, params):
+	def exists(self, params, return_callback=None):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
 			return_callback(True)
@@ -90,7 +90,7 @@ class HEFileUnix( HEPlugin.HEPlugin ):
 			return_callback(False)
 		
 	# ---- returns a array with File Data
-	def stat(self, return_callback, params):
+	def stat(self, params, return_callback=None):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
 			return_callback(os.stat(HEUri.getPath(params[0]))[ST_SIZE])

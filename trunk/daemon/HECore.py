@@ -16,14 +16,14 @@ if getattr(dbus, 'version', (0,0,0)) >= (0,41,0):
 
 
 class RequestThread(Thread):
-	def __init__(self, method, return_cb, params):
+	def __init__(self, method, params, return_cb):
 		Thread.__init__(self)
 		self.params = params
 		self.return_cb = return_cb
 		self.method = method
 		
 	def run(self):
-		self.method(self.return_cb, self.params)
+		self.method(self.params, self.return_cb)
 		
 		
 		
@@ -54,7 +54,7 @@ class HECore(dbus.service.Object):
 			method = self.__plugins[plugin_type].getInstruction(instruction)
 			if method:
 				try:
-					thread = RequestThread(method, return_cb, params)
+					thread = RequestThread(method, params, return_cb)
 					thread.start()
 					return "OK"
 				except HEException.HEException, e:
