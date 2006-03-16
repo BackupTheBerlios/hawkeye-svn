@@ -33,24 +33,24 @@ class HEFileUnix( HEPlugin.HEPlugin ):
 			uri += "/"
 		return uri
 		
-	def go_up(self, params, callbacks = None):
+	def go_up(self, return_callback, params):
 		params[0] = self.checkUri(params[0])
 		pos = HEUri.getPath(params[0]).rfind("/")
 		if pos == 0:
-			return params[0]
+			 return_callback(params[0])
 		else:
 			params[0] = HEUri.getUri("file", HEUri.getPath(params[0])[0:HEUri.getPath(params[0])[0:len(HEUri.getPath(params[0]))-2].rfind("/")])
-			return params[0]
+			return_callback(params[0])
 	
 	# ---- checks if the HEUri exists
-	def file_exists(self, params, callbacks = None):
+	def file_exists(self, return_callback, params):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
-			return True
+			return_callback(True)
 		else:
-			return False
+			return_callback(False)
 
-	def get(self, params, callbacks = None):
+	def get(self, return_callback, params):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
 			item_list = os.listdir(HEUri.getPath(params[0]))
@@ -62,13 +62,13 @@ class HEFileUnix( HEPlugin.HEPlugin ):
 				else:
 					tmp_list.append(params[0]+"/"+item)
 			
-			return tmp_list
+			return_callback(tmp_list)
 		else:
 			raise HEException.HEException("path "+params[0]+" does not exist")
 		
 		
 	# ---- removes the Container in the HEUri passed with params[0] 
-	def remove(self, params, callbacks = None):
+	def remove(self, return_callback, params):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
 			os.remove(HEUri.getPath(params[0]))
@@ -76,23 +76,23 @@ class HEFileUnix( HEPlugin.HEPlugin ):
 			raise HEException.HEException("path "+params[0]+" does not exist")
 
 	# ---- copy method ---- the first callback it will use for progress
-	def copy(self, params, callbacks = None):
-		return 1
+	def copy(self, return_callback, params):
+		return_callback(1)
 		
-	def move(self, params, callbacks = None):
-		return 1
+	def move(self, return_callback, params):
+		return_callback(1)
 		
-	def exists(self, params, callbacks = None):
+	def exists(self, return_callback, params):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
-			return True
+			return_callback(True)
 		else:
-			return False
+			return_callback(False)
 		
 	# ---- returns a array with File Data
-	def stat(self, params, callbacks = None):
+	def stat(self, return_callback, params):
 		params[0] = self.checkUri(params[0])
 		if os.path.exists(HEUri.getPath(params[0])):
-			return os.stat(HEUri.getPath(params[0]))[ST_SIZE]
+			return_callback(os.stat(HEUri.getPath(params[0]))[ST_SIZE])
 		else:
 			raise HEException.HEException("path "+params[0]+" does not exist")
