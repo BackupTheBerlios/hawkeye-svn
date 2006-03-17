@@ -40,7 +40,7 @@ class HEGoogle( HEPlugin.HEPlugin ):
 		else:
 			raise HEException.HEException("WSDL path is empty or the WSDL file does not exist")
 
-	def search(self, params, callback=None):
+	def search(self, params, return_callback=None):
 		try: 
 			if HEUri.getPath(params[0])  != "":
 				if self.__server == None:
@@ -59,7 +59,10 @@ class HEGoogle( HEPlugin.HEPlugin ):
 						cur.append(data.title)
 						cur.append(data.summary)
 						result.append(cur)
-					return result
+					if return_callback:
+						return_callback(result)
+					else:
+						return result
 				else:
 					raise HEException.HEException("Key is not set")
 			else:
